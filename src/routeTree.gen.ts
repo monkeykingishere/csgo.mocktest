@@ -16,6 +16,7 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppTestTestIdInstructionsRouteImport } from './routes/_app.test.$testId.instructions'
+import { Route as AppTestTestIdAttemptRouteImport } from './routes/_app.test.$testId.attempt'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -52,6 +53,11 @@ const AppTestTestIdInstructionsRoute =
     path: '/test/$testId/instructions',
     getParentRoute: () => AppRoute,
   } as any)
+const AppTestTestIdAttemptRoute = AppTestTestIdAttemptRouteImport.update({
+  id: '/test/$testId/attempt',
+  path: '/test/$testId/attempt',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/dashboard': typeof AppDashboardRoute
+  '/test/$testId/attempt': typeof AppTestTestIdAttemptRoute
   '/test/$testId/instructions': typeof AppTestTestIdInstructionsRoute
 }
 export interface FileRoutesByTo {
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/dashboard': typeof AppDashboardRoute
+  '/test/$testId/attempt': typeof AppTestTestIdAttemptRoute
   '/test/$testId/instructions': typeof AppTestTestIdInstructionsRoute
 }
 export interface FileRoutesById {
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/test/$testId/attempt': typeof AppTestTestIdAttemptRoute
   '/_app/test/$testId/instructions': typeof AppTestTestIdInstructionsRoute
 }
 export interface FileRouteTypes {
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/dashboard'
+    | '/test/$testId/attempt'
     | '/test/$testId/instructions'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/dashboard'
+    | '/test/$testId/attempt'
     | '/test/$testId/instructions'
   id:
     | '__root__'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/_app/dashboard'
+    | '/_app/test/$testId/attempt'
     | '/_app/test/$testId/instructions'
   fileRoutesById: FileRoutesById
 }
@@ -166,16 +178,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTestTestIdInstructionsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/test/$testId/attempt': {
+      id: '/_app/test/$testId/attempt'
+      path: '/test/$testId/attempt'
+      fullPath: '/test/$testId/attempt'
+      preLoaderRoute: typeof AppTestTestIdAttemptRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
+  AppTestTestIdAttemptRoute: typeof AppTestTestIdAttemptRoute
   AppTestTestIdInstructionsRoute: typeof AppTestTestIdInstructionsRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
+  AppTestTestIdAttemptRoute: AppTestTestIdAttemptRoute,
   AppTestTestIdInstructionsRoute: AppTestTestIdInstructionsRoute,
 }
 
