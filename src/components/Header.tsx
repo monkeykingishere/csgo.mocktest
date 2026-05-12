@@ -33,7 +33,7 @@ export function Header() {
 
         <nav className="hidden md:flex items-center gap-2">
           {navLinks.map(l => (
-            // @ts-expect-error dynamic
+            // @ts-ignore
             <Link key={l.to} to={l.to} className="nb-interactive bg-white px-3 py-1.5 text-sm font-bold uppercase">
               {l.label}
             </Link>
@@ -55,7 +55,7 @@ export function Header() {
       {open && (
         <div className="md:hidden border-t-4 border-black bg-white p-4 space-y-2">
           {navLinks.map(l => (
-            // @ts-expect-error dynamic
+            // @ts-ignore
             <Link key={l.to} to={l.to} onClick={() => setOpen(false)} className="block nb-interactive bg-[var(--brand-yellow)] px-3 py-2 text-sm font-bold uppercase">
               {l.label}
             </Link>
