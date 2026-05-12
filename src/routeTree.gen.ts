@@ -9,38 +9,234 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppSettingsRouteImport } from './routes/_app.settings'
+import { Route as AppProfileRouteImport } from './routes/_app.profile'
+import { Route as AppHistoryRouteImport } from './routes/_app.history'
+import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppResultAttemptIdRouteImport } from './routes/_app.result.$attemptId'
+import { Route as AppAnalysisAttemptIdRouteImport } from './routes/_app.analysis.$attemptId'
+import { Route as AppTestTestIdInstructionsRouteImport } from './routes/_app.test.$testId.instructions'
+import { Route as AppTestTestIdAttemptRouteImport } from './routes/_app.test.$testId.attempt'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHistoryRoute = AppHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppResultAttemptIdRoute = AppResultAttemptIdRouteImport.update({
+  id: '/result/$attemptId',
+  path: '/result/$attemptId',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAnalysisAttemptIdRoute = AppAnalysisAttemptIdRouteImport.update({
+  id: '/analysis/$attemptId',
+  path: '/analysis/$attemptId',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTestTestIdInstructionsRoute =
+  AppTestTestIdInstructionsRouteImport.update({
+    id: '/test/$testId/instructions',
+    path: '/test/$testId/instructions',
+    getParentRoute: () => AppRoute,
+  } as any)
+const AppTestTestIdAttemptRoute = AppTestTestIdAttemptRouteImport.update({
+  id: '/test/$testId/attempt',
+  path: '/test/$testId/attempt',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/history': typeof AppHistoryRoute
+  '/profile': typeof AppProfileRoute
+  '/settings': typeof AppSettingsRoute
+  '/analysis/$attemptId': typeof AppAnalysisAttemptIdRoute
+  '/result/$attemptId': typeof AppResultAttemptIdRoute
+  '/test/$testId/attempt': typeof AppTestTestIdAttemptRoute
+  '/test/$testId/instructions': typeof AppTestTestIdInstructionsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/history': typeof AppHistoryRoute
+  '/profile': typeof AppProfileRoute
+  '/settings': typeof AppSettingsRoute
+  '/analysis/$attemptId': typeof AppAnalysisAttemptIdRoute
+  '/result/$attemptId': typeof AppResultAttemptIdRoute
+  '/test/$testId/attempt': typeof AppTestTestIdAttemptRoute
+  '/test/$testId/instructions': typeof AppTestTestIdInstructionsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/history': typeof AppHistoryRoute
+  '/_app/profile': typeof AppProfileRoute
+  '/_app/settings': typeof AppSettingsRoute
+  '/_app/analysis/$attemptId': typeof AppAnalysisAttemptIdRoute
+  '/_app/result/$attemptId': typeof AppResultAttemptIdRoute
+  '/_app/test/$testId/attempt': typeof AppTestTestIdAttemptRoute
+  '/_app/test/$testId/instructions': typeof AppTestTestIdInstructionsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/signup'
+    | '/sitemap.xml'
+    | '/dashboard'
+    | '/history'
+    | '/profile'
+    | '/settings'
+    | '/analysis/$attemptId'
+    | '/result/$attemptId'
+    | '/test/$testId/attempt'
+    | '/test/$testId/instructions'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/signup'
+    | '/sitemap.xml'
+    | '/dashboard'
+    | '/history'
+    | '/profile'
+    | '/settings'
+    | '/analysis/$attemptId'
+    | '/result/$attemptId'
+    | '/test/$testId/attempt'
+    | '/test/$testId/instructions'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/forgot-password'
+    | '/login'
+    | '/signup'
+    | '/sitemap.xml'
+    | '/_app/dashboard'
+    | '/_app/history'
+    | '/_app/profile'
+    | '/_app/settings'
+    | '/_app/analysis/$attemptId'
+    | '/_app/result/$attemptId'
+    | '/_app/test/$testId/attempt'
+    | '/_app/test/$testId/instructions'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LoginRoute: typeof LoginRoute
+  SignupRoute: typeof SignupRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +244,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/history': {
+      id: '/_app/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof AppHistoryRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/result/$attemptId': {
+      id: '/_app/result/$attemptId'
+      path: '/result/$attemptId'
+      fullPath: '/result/$attemptId'
+      preLoaderRoute: typeof AppResultAttemptIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/analysis/$attemptId': {
+      id: '/_app/analysis/$attemptId'
+      path: '/analysis/$attemptId'
+      fullPath: '/analysis/$attemptId'
+      preLoaderRoute: typeof AppAnalysisAttemptIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/test/$testId/instructions': {
+      id: '/_app/test/$testId/instructions'
+      path: '/test/$testId/instructions'
+      fullPath: '/test/$testId/instructions'
+      preLoaderRoute: typeof AppTestTestIdInstructionsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/test/$testId/attempt': {
+      id: '/_app/test/$testId/attempt'
+      path: '/test/$testId/attempt'
+      fullPath: '/test/$testId/attempt'
+      preLoaderRoute: typeof AppTestTestIdAttemptRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppHistoryRoute: typeof AppHistoryRoute
+  AppProfileRoute: typeof AppProfileRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppAnalysisAttemptIdRoute: typeof AppAnalysisAttemptIdRoute
+  AppResultAttemptIdRoute: typeof AppResultAttemptIdRoute
+  AppTestTestIdAttemptRoute: typeof AppTestTestIdAttemptRoute
+  AppTestTestIdInstructionsRoute: typeof AppTestTestIdInstructionsRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppDashboardRoute: AppDashboardRoute,
+  AppHistoryRoute: AppHistoryRoute,
+  AppProfileRoute: AppProfileRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppAnalysisAttemptIdRoute: AppAnalysisAttemptIdRoute,
+  AppResultAttemptIdRoute: AppResultAttemptIdRoute,
+  AppTestTestIdAttemptRoute: AppTestTestIdAttemptRoute,
+  AppTestTestIdInstructionsRoute: AppTestTestIdInstructionsRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  LoginRoute: LoginRoute,
+  SignupRoute: SignupRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
