@@ -10,6 +10,9 @@ export default defineConfig({
       server: {
         entry: "src/server.ts",
       },
+      spa: {
+        enabled: true,
+      },
     }),
     react(),
     tailwindcss(),
