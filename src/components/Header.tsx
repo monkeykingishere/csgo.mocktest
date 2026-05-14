@@ -14,14 +14,14 @@ export function Header() {
     navigate({ to: "/" });
   };
 
-  const navLinks = (current
-    ? [
+  const navLinks = current
+    ? ([
         { to: "/dashboard", label: "Dashboard" },
         { to: "/history", label: "History" },
         { to: "/profile", label: "Profile" },
         { to: "/settings", label: "Settings" },
-      ]
-    : [{ to: "/", label: "Home" }]) as const;
+      ] as const)
+    : ([{ to: "/", label: "Home" }] as const);
 
   return (
     <header className="sticky top-0 z-40 nb-border border-x-0 border-t-0 bg-[var(--brand-yellow)]">
