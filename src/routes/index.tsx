@@ -8,7 +8,7 @@ import { Trophy, Clock, BarChart3, BookOpen, ShieldCheck, Zap, Quote } from "luc
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "CS:GO — Ace NIMCET with Realistic Mock Tests" },
+      { title: "CS:GO — Ace Exams with Realistic Mock Tests" },
       { name: "description", content: "Practice NIMCET-style mock tests with timer, detailed analytics, and explanation for every question." },
     ],
   }),
@@ -32,7 +32,7 @@ function Landing() {
               NIMCET 2026 • Mock Tests
             </div>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tighter">
-              Ace NIMCET with <span className="bg-[var(--brand-yellow)] nb-border px-2 inline-block">Realistic</span> Mock Tests.
+              Ace Exams with <span className="bg-[var(--brand-yellow)] nb-border px-2 inline-block">Realistic</span> Mock Tests.
             </h1>
             <p className="mt-6 text-lg font-medium text-muted-foreground max-w-xl">
               Full-length 120-question mocks. Timer, palette, mark-for-review — exactly like exam day.
@@ -43,7 +43,7 @@ function Landing() {
               <a href="#features"><NbButton variant="default" size="lg">View Features</NbButton></a>
             </div>
             <div className="mt-8 flex flex-wrap gap-6 text-sm font-bold uppercase tracking-wide">
-              <div>📚 6 Mock Tests</div>
+              <div>📚 12 Mock Tests</div>
               <div>⚡ 140+ Questions</div>
               <div>📊 Subject Analytics</div>
             </div>
@@ -97,7 +97,7 @@ function Landing() {
         </section>
 
         {/* WHY NIMCET */}
-        <section className="bg-black text-white nb-border border-x-0 my-12">
+        {/* <section className="bg-black text-white nb-border border-x-0 my-12">
           <div className="mx-auto max-w-7xl px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
             <div>
               <h2 className="text-4xl md:text-5xl font-black mb-6">Why NIMCET?</h2>
@@ -122,7 +122,7 @@ function Landing() {
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* TESTIMONIALS */}
         <section className="mx-auto max-w-7xl px-4 py-16">

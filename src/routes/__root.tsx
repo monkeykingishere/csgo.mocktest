@@ -7,8 +7,10 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import appCss from "../styles.css?url";
+import { initializePWA } from "../lib/pwa";
 
 function NotFoundComponent() {
   return (
@@ -50,13 +52,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "CS:GO — NIMCET Mock Tests" },
       { name: "description", content: "Realistic NIMCET mock tests with detailed analysis. Practice Maths, Logical Reasoning, Computer Awareness, and English." },
       { name: "author", content: "CS:GO" },
+      { name: "theme-color", content: "#FCCB02" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "apple-mobile-web-app-title", content: "CS:GO Mocks" },
+      { name: "msapplication-TileColor", content: "#FCCB02" },
+      { name: "msapplication-config", content: "/browserconfig.xml" },
       { property: "og:title", content: "CS:GO — NIMCET Mock Tests" },
       { property: "og:description", content: "Realistic NIMCET mock tests with detailed analysis." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:image", content: "/icon-512x512.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "/icon-512x512.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "icon", type: "image/png", sizes: "16x16", href: "/icon-16x16.png" },
+      { rel: "icon", type: "image/png", sizes: "32x32", href: "/icon-32x32.png" },
+      { rel: "icon", type: "image/svg+xml", href: "/cslogo.svg" },
+      { rel: "apple-touch-icon", href: "/icon-180x180.png" },
+      { rel: "mask-icon", href: "/cslogo.svg", color: "#FCCB02" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" },
@@ -79,6 +95,18 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    initializePWA(
+      () => {
+        console.log("PWA update available");
+      },
+      () => {
+        console.log("Offline mode detected");
+      }
+    );
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
