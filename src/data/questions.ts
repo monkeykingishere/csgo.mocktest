@@ -150,6 +150,76 @@ export const QUESTIONS: Question[] = [
   { id: 138, subject: "English", question: "One word: 'one who cannot read or write':", options: ["Illiterate", "Ignorant", "Innocent", "Illegal"], correctAnswer: 0, explanation: "Illiterate.", difficulty: "Easy" },
   { id: 139, subject: "English", question: "Idiom: 'Break the ice' means:", options: ["Make introduction easier", "Cause trouble", "Cool down", "Win argument"], correctAnswer: 0, explanation: "Initiate conversation.", difficulty: "Easy" },
   { id: 140, subject: "English", question: "Choose correctly punctuated: 'My favorite colors are red blue and green.'", options: ["red blue, and green.", "red, blue, and green.", "red, blue and, green.", "red blue and, green."], correctAnswer: 1, explanation: "Use commas in a list.", difficulty: "Easy" },
+
+  // ===== TUEE: NUMBER SYSTEM (Mathematics) =====
+  { id: 141, subject: "Mathematics", question: "Convert binary 101101 to decimal:", options: ["41", "43", "45", "47"], correctAnswer: 2, explanation: "32+8+4+1 = 45.", difficulty: "Easy" },
+  { id: 142, subject: "Mathematics", question: "Convert decimal 156 to hexadecimal:", options: ["9A", "9C", "AC", "CA"], correctAnswer: 1, explanation: "156 = 9·16 + 12 = 9C.", difficulty: "Medium" },
+  { id: 143, subject: "Mathematics", question: "2's complement of 8-bit number 00010110:", options: ["11101001", "11101010", "11101100", "00010110"], correctAnswer: 1, explanation: "Invert + 1 = 11101010.", difficulty: "Medium" },
+  { id: 144, subject: "Mathematics", question: "Octal 17 in decimal is:", options: ["13", "15", "17", "23"], correctAnswer: 1, explanation: "1·8 + 7 = 15.", difficulty: "Easy" },
+  { id: 145, subject: "Mathematics", question: "Range of an 8-bit signed (2's complement) integer:", options: ["−127 to 127", "−128 to 127", "0 to 255", "−128 to 128"], correctAnswer: 1, explanation: "−2^7 to 2^7 − 1.", difficulty: "Medium" },
+  { id: 146, subject: "Mathematics", question: "Binary addition: 1011 + 1101 = ?", options: ["10000", "11000", "11100", "11000"], correctAnswer: 1, explanation: "11 + 13 = 24 = 11000.", difficulty: "Medium" },
+  { id: 147, subject: "Mathematics", question: "How many bits are needed to represent decimal 1000?", options: ["8", "9", "10", "11"], correctAnswer: 2, explanation: "2^10 = 1024 ≥ 1000.", difficulty: "Easy" },
+  { id: 148, subject: "Mathematics", question: "Hex 'FF' equals decimal:", options: ["240", "250", "255", "256"], correctAnswer: 2, explanation: "15·16 + 15 = 255.", difficulty: "Easy" },
+  { id: 149, subject: "Mathematics", question: "BCD code of decimal 27:", options: ["00100111", "00110111", "10010111", "00010111"], correctAnswer: 0, explanation: "2 → 0010, 7 → 0111.", difficulty: "Medium" },
+  { id: 150, subject: "Mathematics", question: "Gray code of binary 100 is:", options: ["110", "111", "101", "100"], correctAnswer: 0, explanation: "Gray = b XOR (b>>1) → 110.", difficulty: "Hard" },
+  { id: 151, subject: "Mathematics", question: "How many distinct values can 4 bits represent?", options: ["8", "15", "16", "32"], correctAnswer: 2, explanation: "2^4 = 16.", difficulty: "Easy" },
+  { id: 152, subject: "Mathematics", question: "Decimal 0.625 in binary is:", options: ["0.101", "0.110", "0.011", "0.111"], correctAnswer: 0, explanation: "1/2 + 1/8 = 0.625.", difficulty: "Medium" },
+  { id: 153, subject: "Mathematics", question: "1's complement of 10110010 is:", options: ["01001100", "01001101", "01001110", "10110010"], correctAnswer: 1, explanation: "Invert all bits.", difficulty: "Easy" },
+  { id: 154, subject: "Mathematics", question: "Hex 1A + Hex B equals:", options: ["25", "26", "1B", "25 (hex)"], correctAnswer: 0, explanation: "26 + 11 = 37 = 0x25.", difficulty: "Medium" },
+  { id: 155, subject: "Mathematics", question: "ASCII code of 'A' is:", options: ["63", "64", "65", "97"], correctAnswer: 2, explanation: "Uppercase A = 65.", difficulty: "Easy" },
+
+  // ===== TUEE: BOOLEAN ALGEBRA & LOGIC GATES (Computer Awareness) =====
+  { id: 156, subject: "Computer Awareness", question: "Which gate is known as the 'inverter'?", options: ["AND", "OR", "NOT", "XOR"], correctAnswer: 2, explanation: "NOT inverts its single input.", difficulty: "Easy" },
+  { id: 157, subject: "Computer Awareness", question: "NAND gate output is 0 only when:", options: ["Both inputs 0", "Both inputs 1", "One input is 1", "Always"], correctAnswer: 1, explanation: "NAND = NOT(AND).", difficulty: "Easy" },
+  { id: 158, subject: "Computer Awareness", question: "Boolean simplification: A + AB = ?", options: ["A", "B", "AB", "A + B"], correctAnswer: 0, explanation: "Absorption law.", difficulty: "Easy" },
+  { id: 159, subject: "Computer Awareness", question: "De Morgan's Law: NOT(A·B) = ?", options: ["NOT A · NOT B", "NOT A + NOT B", "A + B", "A · B"], correctAnswer: 1, explanation: "Standard De Morgan.", difficulty: "Easy" },
+  { id: 160, subject: "Computer Awareness", question: "Universal gate(s) is/are:", options: ["AND only", "OR only", "NAND and NOR", "XOR only"], correctAnswer: 2, explanation: "Any circuit can be built using NAND or NOR.", difficulty: "Easy" },
+  { id: 161, subject: "Computer Awareness", question: "XOR of A and A is:", options: ["0", "1", "A", "NOT A"], correctAnswer: 0, explanation: "Same inputs → 0.", difficulty: "Easy" },
+  { id: 162, subject: "Computer Awareness", question: "Truth table rows for 4 inputs:", options: ["8", "12", "16", "32"], correctAnswer: 2, explanation: "2^4 = 16.", difficulty: "Easy" },
+  { id: 163, subject: "Computer Awareness", question: "A·(A+B) simplifies to:", options: ["A", "B", "A+B", "A·B"], correctAnswer: 0, explanation: "Absorption.", difficulty: "Easy" },
+  { id: 164, subject: "Computer Awareness", question: "Sum-of-Products (SOP) form is built from:", options: ["Maxterms", "Minterms", "Don't cares", "Latches"], correctAnswer: 1, explanation: "SOP = OR of minterms.", difficulty: "Medium" },
+  { id: 165, subject: "Computer Awareness", question: "Half-adder produces:", options: ["Sum and Carry", "Sum only", "Carry only", "Difference and Borrow"], correctAnswer: 0, explanation: "Sum = A XOR B, Carry = A·B.", difficulty: "Easy" },
+  { id: 166, subject: "Computer Awareness", question: "K-Map is used to:", options: ["Encrypt data", "Simplify Boolean expressions", "Sort data", "Schedule processes"], correctAnswer: 1, explanation: "Karnaugh map minimizes logic.", difficulty: "Easy" },
+  { id: 167, subject: "Computer Awareness", question: "A flip-flop is a:", options: ["Combinational circuit", "1-bit memory element", "Logic gate", "Register file"], correctAnswer: 1, explanation: "Stores one bit.", difficulty: "Easy" },
+  { id: 168, subject: "Computer Awareness", question: "How many NAND gates are required to implement a NOT gate?", options: ["1", "2", "3", "4"], correctAnswer: 0, explanation: "Tie both inputs together.", difficulty: "Medium" },
+  { id: 169, subject: "Computer Awareness", question: "The dual of (A + 1) = 1 is:", options: ["A·0 = 0", "A + 0 = A", "A·1 = A", "A + A = A"], correctAnswer: 0, explanation: "Swap + ↔ · and 0 ↔ 1.", difficulty: "Medium" },
+  { id: 170, subject: "Computer Awareness", question: "XOR is also called:", options: ["Equivalence", "Inequivalence", "Implication", "Inhibition"], correctAnswer: 1, explanation: "Outputs 1 when inputs differ.", difficulty: "Medium" },
+
+  // ===== TUEE: C PROGRAMMING & PROBLEM SOLVING (Computer Awareness) =====
+  { id: 171, subject: "Computer Awareness", question: "Output of: printf(\"%d\", 5/2);", options: ["2.5", "2", "3", "0"], correctAnswer: 1, explanation: "Integer division truncates toward 0.", difficulty: "Easy" },
+  { id: 172, subject: "Computer Awareness", question: "Which header file is needed for printf in C?", options: ["<stdlib.h>", "<stdio.h>", "<conio.h>", "<string.h>"], correctAnswer: 1, explanation: "Standard I/O header.", difficulty: "Easy" },
+  { id: 173, subject: "Computer Awareness", question: "What does sizeof('A') return in standard C?", options: ["1", "2", "4", "Depends"], correctAnswer: 2, explanation: "Character constant has type int in C → 4 (typically).", difficulty: "Hard" },
+  { id: 174, subject: "Computer Awareness", question: "Which operator has highest precedence in C?", options: ["++ (postfix)", "* (multiplication)", "= (assignment)", "&& (logical AND)"], correctAnswer: 0, explanation: "Postfix ++ is at the top.", difficulty: "Medium" },
+  { id: 175, subject: "Computer Awareness", question: "int a=5; printf(\"%d\", a++ + ++a); // typical output", options: ["10", "11", "12", "Undefined behavior"], correctAnswer: 3, explanation: "Multiple modifications without sequence point.", difficulty: "Hard" },
+  { id: 176, subject: "Computer Awareness", question: "Which is NOT a valid C storage class?", options: ["auto", "static", "extern", "global"], correctAnswer: 3, explanation: "auto/static/extern/register are storage classes.", difficulty: "Easy" },
+  { id: 177, subject: "Computer Awareness", question: "A pointer that points to nothing is called:", options: ["Wild", "Null", "Dangling", "Void"], correctAnswer: 1, explanation: "NULL pointer.", difficulty: "Easy" },
+  { id: 178, subject: "Computer Awareness", question: "Which function dynamically allocates memory in C?", options: ["alloc()", "malloc()", "new()", "create()"], correctAnswer: 1, explanation: "malloc from <stdlib.h>.", difficulty: "Easy" },
+  { id: 179, subject: "Computer Awareness", question: "Output: int x=10; if(x=0) printf(\"A\"); else printf(\"B\");", options: ["A", "B", "Compile error", "Nothing"], correctAnswer: 1, explanation: "x=0 assigns 0 (falsy), so else runs.", difficulty: "Medium" },
+  { id: 180, subject: "Computer Awareness", question: "In C, strings are terminated by:", options: ["\\n", "\\0", "EOF", "Space"], correctAnswer: 1, explanation: "Null character marks end.", difficulty: "Easy" },
+  { id: 181, subject: "Computer Awareness", question: "What is the value of !(5>3)?", options: ["0", "1", "True", "Error"], correctAnswer: 0, explanation: "5>3 is 1; !1 = 0.", difficulty: "Easy" },
+  { id: 182, subject: "Computer Awareness", question: "Which loop executes its body at least once?", options: ["for", "while", "do-while", "None"], correctAnswer: 2, explanation: "Condition checked at end.", difficulty: "Easy" },
+  { id: 183, subject: "Computer Awareness", question: "int a[5] = {1,2,3}; what is a[3]?", options: ["3", "0", "Garbage", "Compile error"], correctAnswer: 1, explanation: "Remaining elements zero-initialized.", difficulty: "Medium" },
+  { id: 184, subject: "Computer Awareness", question: "In C, which is correct to declare a pointer to int?", options: ["int p*;", "int *p;", "ptr int p;", "*int p;"], correctAnswer: 1, explanation: "Standard declaration.", difficulty: "Easy" },
+  { id: 185, subject: "Computer Awareness", question: "Recursion uses which data structure internally?", options: ["Queue", "Stack", "Heap", "Tree"], correctAnswer: 1, explanation: "Function call stack.", difficulty: "Easy" },
+  { id: 186, subject: "Computer Awareness", question: "What does break do inside nested loops?", options: ["Exits all loops", "Exits innermost loop only", "Skips iteration", "Raises error"], correctAnswer: 1, explanation: "Only innermost.", difficulty: "Easy" },
+  { id: 187, subject: "Computer Awareness", question: "Format specifier for unsigned long in C:", options: ["%d", "%u", "%lu", "%ld"], correctAnswer: 2, explanation: "%lu for unsigned long.", difficulty: "Medium" },
+  { id: 188, subject: "Computer Awareness", question: "Which is a valid C identifier?", options: ["2var", "_var2", "var-2", "var 2"], correctAnswer: 1, explanation: "Must start with letter or underscore.", difficulty: "Easy" },
+  { id: 189, subject: "Computer Awareness", question: "free() is used to:", options: ["Allocate memory", "Free dynamically allocated memory", "Free stack memory", "Reset pointer"], correctAnswer: 1, explanation: "Releases memory from malloc/calloc.", difficulty: "Easy" },
+  { id: 190, subject: "Computer Awareness", question: "Which sorting is in-place and stable?", options: ["Quick Sort", "Merge Sort", "Insertion Sort", "Heap Sort"], correctAnswer: 2, explanation: "Insertion sort is in-place and stable.", difficulty: "Medium" },
+
+  // ===== TUEE: ADDITIONAL ENGLISH VOCABULARY =====
+  { id: 191, subject: "English", question: "Synonym of 'Candid':", options: ["Frank", "Sweet", "Hidden", "Bitter"], correctAnswer: 0, explanation: "Candid means open and frank.", difficulty: "Easy" },
+  { id: 192, subject: "English", question: "Antonym of 'Frugal':", options: ["Thrifty", "Extravagant", "Careful", "Saving"], correctAnswer: 1, explanation: "Extravagant is opposite of frugal.", difficulty: "Medium" },
+  { id: 193, subject: "English", question: "One word: 'a place where dead bodies are kept':", options: ["Cemetery", "Mortuary", "Graveyard", "Crematorium"], correctAnswer: 1, explanation: "Mortuary.", difficulty: "Medium" },
+  { id: 194, subject: "English", question: "Synonym of 'Pragmatic':", options: ["Practical", "Idealistic", "Theoretical", "Romantic"], correctAnswer: 0, explanation: "Dealing with things practically.", difficulty: "Medium" },
+  { id: 195, subject: "English", question: "Idiom: 'Once in a blue moon' means:", options: ["Frequently", "Never", "Very rarely", "At night only"], correctAnswer: 2, explanation: "Something rare.", difficulty: "Easy" },
+
+  // ===== TUEE: ADDITIONAL LOGICAL REASONING =====
+  { id: 196, subject: "Logical Reasoning", question: "Find the odd one: 8, 27, 64, 100, 125", options: ["27", "64", "100", "125"], correctAnswer: 2, explanation: "Others are perfect cubes.", difficulty: "Medium" },
+  { id: 197, subject: "Logical Reasoning", question: "If '+' means '×', '−' means '+', '×' means '÷', '÷' means '−', then 6 + 2 − 4 ÷ 2 = ?", options: ["12", "14", "16", "18"], correctAnswer: 1, explanation: "6×2 + 4 − 2 = 12+4−2 = 14.", difficulty: "Hard" },
+  { id: 198, subject: "Logical Reasoning", question: "A man walks 10m N, 6m E, 2m S, 6m E. Distance from start:", options: ["12m", "14m", "15m", "16m"], correctAnswer: 2, explanation: "Net: 12m E, 8m N → √(144+64) ≈ 14.4m; closest 15m.", difficulty: "Hard" },
+  { id: 199, subject: "Logical Reasoning", question: "If LION is coded as 12-9-15-14, then TIGER = ?", options: ["20-9-7-5-18", "21-9-7-5-18", "20-8-7-5-18", "20-9-8-5-18"], correctAnswer: 0, explanation: "Letter positions in alphabet.", difficulty: "Easy" },
+  { id: 200, subject: "Logical Reasoning", question: "Find the missing: 7, 14, 28, 56, ?", options: ["100", "112", "120", "128"], correctAnswer: 1, explanation: "Each term doubles.", difficulty: "Easy" },
 ];
 
 function pickIds(subject: string, n: number): number[] {
@@ -174,6 +244,38 @@ const fullSet = [
   ...pickIds("Computer Awareness", 35),
   ...pickIds("English", 30),
 ];
+
+// TUEE-specific question pools (Tezpur University MCA Entrance)
+const tueeMathPool = QUESTIONS.filter(q => q.subject === "Mathematics").map(q => q.id);
+const tueeLogicPool = QUESTIONS.filter(q => q.subject === "Logical Reasoning").map(q => q.id);
+const tueeCompPool = QUESTIONS.filter(q => q.subject === "Computer Awareness").map(q => q.id);
+const tueeEngPool = QUESTIONS.filter(q => q.subject === "English").map(q => q.id);
+
+// Deterministic seeded shuffle for reproducible TUEE sets
+function tueeShuffle(arr: number[], seed: number): number[] {
+  const a = [...arr];
+  let s = seed;
+  const rng = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Build a TUEE test of 100 questions per the official syllabus weighting:
+//  • Basic Mathematics (10+2 level + Number System): 30
+//  • Logical Reasoning & Analysis: 20
+//  • Programming & Problem Solving (incl. C, Boolean Algebra, Logic Gates): 30
+//  • English Vocabulary & Composition: 20
+function buildTueeSet(seed: number): number[] {
+  return [
+    ...tueeShuffle(tueeMathPool, seed).slice(0, 30),
+    ...tueeShuffle(tueeLogicPool, seed + 11).slice(0, 20),
+    ...tueeShuffle(tueeCompPool, seed + 23).slice(0, 30),
+    ...tueeShuffle(tueeEngPool, seed + 37).slice(0, 20),
+  ];
+}
 
 export const MOCK_TESTS: MockTest[] = [
   {
@@ -227,6 +329,55 @@ export const MOCK_TESTS: MockTest[] = [
       ...pickIdsRandom("English", 10),
     ],
     durationMin: 60,
+    difficulty: "Mixed",
+  },
+  // ===== TUEE — Tezpur University MCA 2026 Mock Tests =====
+  {
+    id: "tuee-full-1",
+    title: "TUEE MCA Full Mock Test #1",
+    description: "Tezpur University MCA 2026 pattern — 100 Qs covering Math (10+2 + Number System), Logical Reasoning, C / Boolean Algebra / Logic Gates, English Vocabulary.",
+    questionIds: buildTueeSet(101),
+    durationMin: 120,
+    difficulty: "Mixed",
+  },
+  {
+    id: "tuee-full-2",
+    title: "TUEE MCA Full Mock Test #2",
+    description: "Full-length TUEE simulation with strong emphasis on Number System, Boolean Algebra and C Programming.",
+    questionIds: buildTueeSet(202),
+    durationMin: 120,
+    difficulty: "Mixed",
+  },
+  {
+    id: "tuee-full-3",
+    title: "TUEE MCA Full Mock Test #3",
+    description: "TUEE 2026 prospectus-aligned mock — Logical Reasoning & Analysis, 10+2 Mathematics, Programming, English.",
+    questionIds: buildTueeSet(303),
+    durationMin: 120,
+    difficulty: "Mixed",
+  },
+  {
+    id: "tuee-full-4",
+    title: "TUEE MCA Full Mock Test #4",
+    description: "Full TUEE pattern test focusing on Logic Gates, Boolean simplification and C output-based questions.",
+    questionIds: buildTueeSet(404),
+    durationMin: 120,
+    difficulty: "Mixed",
+  },
+  {
+    id: "tuee-full-5",
+    title: "TUEE MCA Full Mock Test #5",
+    description: "Advanced TUEE simulation — number-system conversions, syllogisms, problem-solving and vocabulary.",
+    questionIds: buildTueeSet(505),
+    durationMin: 120,
+    difficulty: "Hard",
+  },
+  {
+    id: "tuee-full-6",
+    title: "TUEE MCA Full Mock Test #6",
+    description: "Final TUEE 2026 revision mock — complete Tezpur University MCA entrance pattern.",
+    questionIds: buildTueeSet(606),
+    durationMin: 120,
     difficulty: "Mixed",
   },
 ];
