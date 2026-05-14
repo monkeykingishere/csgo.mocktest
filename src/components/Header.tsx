@@ -3,6 +3,7 @@ import { useAuth } from "@/store/auth";
 import { NbButton } from "./NbButton";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { PWAInstallPrompt } from "./PWAInstallPrompt";
 
 export function Header() {
   const { current, logout } = useAuth();
@@ -31,12 +32,15 @@ export function Header() {
           <div className="text-xl font-black tracking-tight">:GO</div>
         </Link>
 
+        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-2">
           {navLinks.map(l => (
             <Link key={l.to} to={l.to} className="nb-interactive bg-white px-3 py-1.5 text-sm font-bold uppercase">
               {l.label}
             </Link>
           ))}
+          {/* PWA install button — visible when browser supports it and app not yet installed */}
+          <PWAInstallPrompt />
           {current ? (
             <NbButton variant="red" size="sm" onClick={handleLogout}>Logout</NbButton>
           ) : (
@@ -51,6 +55,8 @@ export function Header() {
           {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
+
+      {/* Mobile menu */}
       {open && (
         <div className="md:hidden border-t-4 border-black bg-white p-4 space-y-2">
           {navLinks.map(l => (
@@ -58,6 +64,10 @@ export function Header() {
               {l.label}
             </Link>
           ))}
+          {/* PWA install in mobile menu (Android only — iOS shows its own bottom banner) */}
+          <div className="pt-1">
+            <PWAInstallPrompt />
+          </div>
           {current ? (
             <NbButton variant="red" className="w-full" onClick={() => { setOpen(false); handleLogout(); }}>Logout</NbButton>
           ) : (
