@@ -4,7 +4,6 @@ import react from "@vitejs/plugin-react";
 // @ts-expect-error - IDE TS server moduleResolution mismatch
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-// @ts-expect-error - IDE TS server moduleResolution mismatch
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
