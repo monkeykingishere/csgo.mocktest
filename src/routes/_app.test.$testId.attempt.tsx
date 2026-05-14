@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTest } from "@/store/test";
 import { getQuestion, getTest } from "@/data/questions";
 import { NbButton } from "@/components/NbButton";
@@ -61,18 +61,22 @@ function Attempt() {
   }, [active?.answers, active?.states, active?.currentIndex]);
 
   const remaining = active ? Math.max(0, Math.floor((active.endsAt - now) / 1000)) : 0;
+  const justSubmittedRef = useRef(false);
 
   // Auto-submit on time up
   useEffect(() => {
     if (active && remaining <= 0) {
       const att = submit();
-      if (att) navigate({ to: "/result/$attemptId", params: { attemptId: att.id } });
+      if (att) {
+        justSubmittedRef.current = true;
+        navigate({ to: "/result/$attemptId", params: { attemptId: att.id } });
+      }
     }
   }, [remaining, active]);
 
   // Redirect if no active session
   useEffect(() => {
-    if (!active || active.testId !== testId) {
+    if ((!active || active.testId !== testId) && !justSubmittedRef.current) {
       navigate({ to: "/test/$testId/instructions", params: { testId } });
     }
   }, [active, testId]);
@@ -115,6 +119,7 @@ function Attempt() {
   if (!active || !test || !q) return <div className="p-10">Loading…</div>;
 
   const handleSubmit = () => {
+    justSubmittedRef.current = true;
     const att = submit();
     if (att) navigate({ to: "/result/$attemptId", params: { attemptId: att.id } });
   };

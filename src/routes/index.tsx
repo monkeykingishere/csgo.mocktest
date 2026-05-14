@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { NbButton } from "@/components/NbButton";
+import { useAuth } from "@/store/auth";
 import { Trophy, Clock, BarChart3, BookOpen, ShieldCheck, Zap, Quote } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -15,6 +16,11 @@ export const Route = createFileRoute("/")({
 });
 
 function Landing() {
+  const current = useAuth(s => s.current);
+  const ctaLink = current ? "/dashboard" : "/signup";
+  const ctaText = current ? "Go to Dashboard" : "Start Mock Test";
+  const bottomText = current ? "Continue to dashboard" : "Create your free account";
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -33,7 +39,7 @@ function Landing() {
               Plus deep analytics so every attempt makes you sharper.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/signup"><NbButton variant="blue" size="lg">Start Mock Test</NbButton></Link>
+              <Link to={ctaLink}><NbButton variant="blue" size="lg">{ctaText}</NbButton></Link>
               <a href="#features"><NbButton variant="default" size="lg">View Features</NbButton></a>
             </div>
             <div className="mt-8 flex flex-wrap gap-6 text-sm font-bold uppercase tracking-wide">
@@ -142,7 +148,7 @@ function Landing() {
           <div className="nb-card bg-[var(--brand-yellow)] p-10 text-center">
             <h2 className="text-4xl md:text-5xl font-black mb-3">Stop reading. Start solving.</h2>
             <p className="font-medium mb-6">Sign up free. Take your first mock in under 60 seconds.</p>
-            <Link to="/signup"><NbButton variant="blue" size="lg">Create your free account</NbButton></Link>
+            <Link to={ctaLink}><NbButton variant="blue" size="lg">{bottomText}</NbButton></Link>
           </div>
         </section>
       </main>

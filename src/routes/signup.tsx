@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/store/auth";
 import { NbButton } from "@/components/NbButton";
 import { NbInput } from "@/components/NbInput";
@@ -14,11 +14,18 @@ export const Route = createFileRoute("/signup")({
 function SignupPage() {
   const navigate = useNavigate();
   const signup = useAuth(s => s.signup);
+  const current = useAuth(s => s.current);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (current) {
+      navigate({ to: "/dashboard" });
+    }
+  }, [current, navigate]);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();

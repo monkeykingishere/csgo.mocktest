@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/store/auth";
 import { NbButton } from "@/components/NbButton";
 import { NbInput } from "@/components/NbInput";
@@ -21,9 +21,11 @@ function LoginPage() {
   const [remember, setRemember] = useState(true);
   const [error, setError] = useState("");
 
-  if (current && typeof window !== "undefined") {
-    queueMicrotask(() => navigate({ to: "/dashboard" }));
-  }
+  useEffect(() => {
+    if (current) {
+      navigate({ to: "/dashboard" });
+    }
+  }, [current, navigate]);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
