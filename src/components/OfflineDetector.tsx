@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
-import { isOnline } from "../lib/pwa";
 
 export function OfflineDetector() {
-  const [isOffline, setIsOffline] = useState(!isOnline());
+  // Start optimistically online — useEffect syncs to actual status after hydration.
+  // This prevents the offline banner from appearing in SSR/prerendered HTML.
+  const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
+    // Sync immediately on mount in case the user is already offline
+    setIsOffline(!navigator.onLine);
+
     const handleOnline = () => setIsOffline(false);
     const handleOffline = () => setIsOffline(true);
 

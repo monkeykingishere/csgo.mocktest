@@ -1,66 +1,121 @@
-import { Workbox } from "workbox-window";
+/**
+ * Global type augmentation for the non-standard BeforeInstallPromptEvent.
+ * This event is defined by the PWA install spec but not yet in the TS DOM lib.
+ */
+declare global {
+  interface BeforeInstallPromptEvent extends Event {
+    readonly platforms: string[];
+    readonly userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+    prompt(): Promise<void>;
+  }
 
+  interface WindowEventMap {
+    beforeinstallprompt: BeforeInstallPromptEvent;
+  }
+}
+
+// ─── Module-level singleton state ────────────────────────────────────────────
+
+let initialized = false;
 let deferredPrompt: BeforeInstallPromptEvent | null = null;
-let installPromptShown = false;
+
+/** All components that want to react when the install prompt becomes available */
+const installCallbacks: Set<(prompt: BeforeInstallPromptEvent) => void> = new Set();
 
 /**
- * Initialize PWA functionality:
- * - Register service worker
- * - Handle install prompts
- * - Track update availability
+ * The public API returned by initializePWA. Callers can hold a reference to
+ * check install eligibility and trigger the install dialog.
  */
-export function initializePWA(
-  onUpdateAvailable?: () => void,
-  onOfflineDetected?: () => void
-): {
+export type PwaHandler = {
   registerInstallPrompt: (callback: (prompt: BeforeInstallPromptEvent) => void) => void;
   canInstall: () => boolean;
   promptInstall: () => Promise<boolean>;
-  unsubscribeInstallPrompt: () => void;
-} {
-  const callbacks: Set<(prompt: BeforeInstallPromptEvent) => void> = new Set();
+  unsubscribeInstallPrompt: (callback: (prompt: BeforeInstallPromptEvent) => void) => void;
+};
 
-  // Only register service worker in production
-  if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
-    const wb = new Workbox("/sw.js");
+// ─── Private singleton handler ────────────────────────────────────────────────
 
-    // Listen for updates
-    wb.addEventListener("controlling", () => {
-      if (onUpdateAvailable) {
-        onUpdateAvailable();
+const _handler: PwaHandler = {
+  registerInstallPrompt(callback) {
+    installCallbacks.add(callback);
+    // If the prompt already fired before this component mounted, call immediately
+    if (deferredPrompt) {
+      try {
+        callback(deferredPrompt);
+      } catch (e) {
+        console.error("Error in install prompt callback:", e);
       }
-    });
+    }
+  },
 
-    // Register the service worker
-    wb.register().catch((error) => {
-      console.error("Service Worker registration failed:", error);
-    });
-  }
+  canInstall: () => !!deferredPrompt,
 
-  // Handle beforeinstallprompt event
+  async promptInstall() {
+    if (!deferredPrompt) return false;
+    try {
+      await deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === "accepted") {
+        console.log("PWA installation accepted");
+        deferredPrompt = null;
+        return true;
+      }
+      console.log("PWA installation dismissed");
+      return false;
+    } catch (error) {
+      console.error("Error prompting for app installation:", error);
+      return false;
+    }
+  },
+
+  unsubscribeInstallPrompt(callback) {
+    installCallbacks.delete(callback);
+  },
+};
+
+// ─── Public API ───────────────────────────────────────────────────────────────
+
+/**
+ * Initialize PWA install-prompt and network-status tracking.
+ *
+ * This function is idempotent — calling it multiple times is safe.
+ * The first call wires up all DOM event listeners; subsequent calls are no-ops.
+ *
+ * NOTE: Service worker registration is handled entirely by vite-plugin-pwa's
+ * injectRegister:"auto" mechanism (registerSW.js). Do NOT register the SW here
+ * to avoid double-registration and dev-mode interference.
+ */
+export function initializePWA(
+  onUpdateAvailable?: () => void,
+  onOfflineDetected?: () => void,
+): PwaHandler {
+  if (initialized) return _handler;
+  initialized = true;
+
+  // Suppress unused-parameter warning; exposed for future use.
+  void onUpdateAvailable;
+
+  // Capture the install prompt so we can trigger it on demand
   window.addEventListener("beforeinstallprompt", (event: BeforeInstallPromptEvent) => {
     event.preventDefault();
     deferredPrompt = event;
-    installPromptShown = false;
 
-    // Notify all registered callbacks
-    callbacks.forEach((callback) => {
+    installCallbacks.forEach((cb) => {
       try {
-        callback(event);
-      } catch (error) {
-        console.error("Error in install prompt callback:", error);
+        cb(event);
+      } catch (e) {
+        console.error("Error in install prompt callback:", e);
       }
     });
   });
 
-  // Handle app installation
+  // Clear the prompt once the user has installed the app
   window.addEventListener("appinstalled", () => {
     console.log("PWA installed successfully");
     deferredPrompt = null;
-    installPromptShown = false;
   });
 
-  // Handle online/offline status
+  // Online / offline events
   window.addEventListener("online", () => {
     console.log("Connection restored");
     window.dispatchEvent(new CustomEvent("pwa:online"));
@@ -68,82 +123,43 @@ export function initializePWA(
 
   window.addEventListener("offline", () => {
     console.log("Connection lost");
-    if (onOfflineDetected) {
-      onOfflineDetected();
-    }
+    if (onOfflineDetected) onOfflineDetected();
     window.dispatchEvent(new CustomEvent("pwa:offline"));
   });
 
-  return {
-    registerInstallPrompt: (callback: (prompt: BeforeInstallPromptEvent) => void) => {
-      callbacks.add(callback);
-      // If prompt is already available, call immediately
-      if (deferredPrompt && !installPromptShown) {
-        callback(deferredPrompt);
-      }
-    },
-
-    canInstall: () => !!deferredPrompt && !installPromptShown,
-
-    promptInstall: async () => {
-      if (!deferredPrompt) {
-        return false;
-      }
-
-      try {
-        deferredPrompt.prompt();
-        installPromptShown = true;
-        const choiceResult = await deferredPrompt.userChoice;
-        if (choiceResult.outcome === "accepted") {
-          console.log("PWA installation accepted");
-          return true;
-        } else {
-          console.log("PWA installation dismissed");
-          return false;
-        }
-      } catch (error) {
-        console.error("Error prompting for app installation:", error);
-        return false;
-      }
-    },
-
-    unsubscribeInstallPrompt: () => {
-      callbacks.clear();
-      deferredPrompt = null;
-      installPromptShown = false;
-    },
-  };
+  return _handler;
 }
 
+// ─── Standalone helpers ───────────────────────────────────────────────────────
+
 /**
- * Check if app is running in standalone mode (installed as PWA)
+ * Returns true when the app is running as an installed PWA (standalone mode).
  */
 export function isAppInstalled(): boolean {
   return (
     window.matchMedia("(display-mode: standalone)").matches ||
-    (window.navigator as any).standalone === true
+    (window.navigator as { standalone?: boolean }).standalone === true
   );
 }
 
 /**
- * Get network status
+ * Returns the current online status.
  */
 export function isOnline(): boolean {
   return navigator.onLine;
 }
 
 /**
- * Listen to online/offline events
+ * Subscribe to online/offline transitions.
+ * Returns an unsubscribe function.
  */
 export function onNetworkStatusChange(
-  callback: (isOnline: boolean) => void
+  callback: (online: boolean) => void,
 ): () => void {
   const handleOnline = () => callback(true);
   const handleOffline = () => callback(false);
-
   window.addEventListener("online", handleOnline);
   window.addEventListener("offline", handleOffline);
-
   return () => {
     window.removeEventListener("online", handleOnline);
     window.removeEventListener("offline", handleOffline);

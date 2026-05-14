@@ -11,6 +11,7 @@ import { useEffect } from "react";
 
 import appCss from "../styles.css?url";
 import { initializePWA } from "../lib/pwa";
+import { OfflineDetector } from "../components/OfflineDetector";
 
 function NotFoundComponent() {
   return (
@@ -57,6 +58,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "apple-mobile-web-app-title", content: "CS:GO Mocks" },
       { name: "msapplication-TileColor", content: "#FCCB02" },
+      { name: "msapplication-TileImage", content: "/icon-144x144.png" },
       { name: "msapplication-config", content: "/browserconfig.xml" },
       { property: "og:title", content: "CS:GO — NIMCET Mock Tests" },
       { property: "og:description", content: "Realistic NIMCET mock tests with detailed analysis." },
@@ -110,6 +112,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <OfflineDetector />
     </QueryClientProvider>
   );
 }

@@ -1,58 +1,64 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { initializePWA, isAppInstalled } from "../lib/pwa";
 
 export function InstallAppButton() {
   const [canInstall, setCanInstall] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
-  const [pwaHandler, setPwaHandler] = useState<ReturnType<typeof initializePWA> | null>(null);
+
+  // Stable callback ref so we can unsubscribe the exact same function reference
+  const onPromptAvailable = useCallback(() => {
+    setCanInstall(true);
+  }, []);
 
   useEffect(() => {
     setIsInstalled(isAppInstalled());
+
+    // initializePWA is idempotent — safe to call here; returns the singleton handler
     const handler = initializePWA();
-    setPwaHandler(handler);
+    handler.registerInstallPrompt(onPromptAvailable);
 
-    handler.registerInstallPrompt(() => {
-      setCanInstall(handler.canInstall());
-    });
-
-    const handleInstall = () => {
+    const handleAppInstalled = () => {
       setCanInstall(false);
       setIsInstalled(true);
     };
-
-    window.addEventListener("appinstalled", handleInstall);
+    window.addEventListener("appinstalled", handleAppInstalled);
 
     return () => {
-      window.removeEventListener("appinstalled", handleInstall);
-      handler.unsubscribeInstallPrompt();
+      window.removeEventListener("appinstalled", handleAppInstalled);
+      handler.unsubscribeInstallPrompt(onPromptAvailable);
     };
-  }, []);
+  }, [onPromptAvailable]);
 
   const handleClick = async () => {
-    if (pwaHandler) {
-      const success = await pwaHandler.promptInstall();
-      if (success) {
-        setCanInstall(false);
-      }
+    const handler = initializePWA();
+    const success = await handler.promptInstall();
+    if (success) {
+      setCanInstall(false);
+      setIsInstalled(true);
     }
   };
 
-  // Don't render if already installed or can't install
+  // Render nothing if already installed or the install prompt is unavailable
   if (isInstalled || !canInstall) {
     return null;
   }
 
   return (
     <button
+      id="pwa-install-btn"
       onClick={handleClick}
-      className="flex items-center gap-2 px-4 py-2 bg-[var(--brand-yellow)] hover:bg-yellow-500 text-black font-semibold rounded-lg transition-colors"
+      className="flex items-center gap-2 px-4 py-2 bg-[var(--brand-yellow)] hover:bg-yellow-400 text-black font-bold rounded-lg transition-colors nb-border"
       title="Install CS:GO as an app"
+      aria-label="Install CS:GO as a desktop or mobile app"
     >
+      {/* Download icon */}
       <svg
         className="w-4 h-4"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
+        aria-hidden="true"
+        focusable="false"
       >
         <path
           strokeLinecap="round"
