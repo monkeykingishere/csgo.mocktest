@@ -16,16 +16,46 @@ declare global {
 
 // ─── Module-level singleton state ────────────────────────────────────────────
 
-let initialized = false;
 let deferredPrompt: BeforeInstallPromptEvent | null = null;
 
 /** All components that want to react when the install prompt becomes available */
 const installCallbacks: Set<(prompt: BeforeInstallPromptEvent) => void> = new Set();
 
 /**
- * The public API returned by initializePWA. Callers can hold a reference to
- * check install eligibility and trigger the install dialog.
+ * CRITICAL: Register the beforeinstallprompt listener at MODULE LOAD TIME.
+ *
+ * The browser fires `beforeinstallprompt` very early in the page lifecycle —
+ * often before React hydrates and any useEffect runs. If we only add the
+ * listener inside initializePWA() (called from useEffect), we miss the event
+ * entirely and the install button never appears.
+ *
+ * By registering at module load time (when the JS bundle first executes),
+ * we guarantee we capture the event no matter when it fires.
  */
+if (typeof window !== "undefined") {
+  window.addEventListener("beforeinstallprompt", (event: BeforeInstallPromptEvent) => {
+    // Prevent the browser's default mini-infobar so we control the UI
+    event.preventDefault();
+    deferredPrompt = event;
+
+    // Notify any already-registered React components
+    installCallbacks.forEach((cb) => {
+      try { cb(event); } catch (e) { console.error("PWA install callback error:", e); }
+    });
+  });
+
+  window.addEventListener("appinstalled", () => {
+    console.log("[PWA] Installed successfully");
+    deferredPrompt = null;
+    // Notify all callbacks so buttons can hide themselves
+    installCallbacks.forEach((cb) => {
+      try { cb(null as unknown as BeforeInstallPromptEvent); } catch {}
+    });
+  });
+}
+
+// ─── Public API type ──────────────────────────────────────────────────────────
+
 export type PwaHandler = {
   registerInstallPrompt: (callback: (prompt: BeforeInstallPromptEvent) => void) => void;
   canInstall: () => boolean;
@@ -33,18 +63,14 @@ export type PwaHandler = {
   unsubscribeInstallPrompt: (callback: (prompt: BeforeInstallPromptEvent) => void) => void;
 };
 
-// ─── Private singleton handler ────────────────────────────────────────────────
+// ─── Singleton handler object ─────────────────────────────────────────────────
 
 const _handler: PwaHandler = {
   registerInstallPrompt(callback) {
     installCallbacks.add(callback);
-    // If the prompt already fired before this component mounted, call immediately
+    // If the prompt already fired BEFORE this component mounted, replay it now
     if (deferredPrompt) {
-      try {
-        callback(deferredPrompt);
-      } catch (e) {
-        console.error("Error in install prompt callback:", e);
-      }
+      try { callback(deferredPrompt); } catch (e) { console.error("PWA callback error:", e); }
     }
   },
 
@@ -56,14 +82,14 @@ const _handler: PwaHandler = {
       await deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === "accepted") {
-        console.log("PWA installation accepted");
+        console.log("[PWA] Installation accepted");
         deferredPrompt = null;
         return true;
       }
-      console.log("PWA installation dismissed");
+      console.log("[PWA] Installation dismissed");
       return false;
     } catch (error) {
-      console.error("Error prompting for app installation:", error);
+      console.error("[PWA] Error prompting install:", error);
       return false;
     }
   },
@@ -73,59 +99,34 @@ const _handler: PwaHandler = {
   },
 };
 
-// ─── Public API ───────────────────────────────────────────────────────────────
+// ─── initializePWA ────────────────────────────────────────────────────────────
 
 /**
- * Initialize PWA install-prompt and network-status tracking.
- *
- * This function is idempotent — calling it multiple times is safe.
- * The first call wires up all DOM event listeners; subsequent calls are no-ops.
- *
- * NOTE: Service worker registration is handled entirely by vite-plugin-pwa's
- * injectRegister:"auto" mechanism (registerSW.js). Do NOT register the SW here
- * to avoid double-registration and dev-mode interference.
+ * Returns the singleton PWA handler.
+ * The online/offline events are wired here (not at module level since they
+ * are less time-sensitive than beforeinstallprompt).
+ * Safe to call multiple times — idempotent.
  */
+let _networkListenersAdded = false;
+
 export function initializePWA(
   onUpdateAvailable?: () => void,
   onOfflineDetected?: () => void,
 ): PwaHandler {
-  if (initialized) return _handler;
-  initialized = true;
+  if (_networkListenersAdded) return _handler;
+  _networkListenersAdded = true;
 
-  // Suppress unused-parameter warning; exposed for future use.
-  void onUpdateAvailable;
+  void onUpdateAvailable; // reserved for future use
 
-  // Capture the install prompt so we can trigger it on demand
-  window.addEventListener("beforeinstallprompt", (event: BeforeInstallPromptEvent) => {
-    event.preventDefault();
-    deferredPrompt = event;
-
-    installCallbacks.forEach((cb) => {
-      try {
-        cb(event);
-      } catch (e) {
-        console.error("Error in install prompt callback:", e);
-      }
+  if (typeof window !== "undefined") {
+    window.addEventListener("online", () => {
+      window.dispatchEvent(new CustomEvent("pwa:online"));
     });
-  });
-
-  // Clear the prompt once the user has installed the app
-  window.addEventListener("appinstalled", () => {
-    console.log("PWA installed successfully");
-    deferredPrompt = null;
-  });
-
-  // Online / offline events
-  window.addEventListener("online", () => {
-    console.log("Connection restored");
-    window.dispatchEvent(new CustomEvent("pwa:online"));
-  });
-
-  window.addEventListener("offline", () => {
-    console.log("Connection lost");
-    if (onOfflineDetected) onOfflineDetected();
-    window.dispatchEvent(new CustomEvent("pwa:offline"));
-  });
+    window.addEventListener("offline", () => {
+      if (onOfflineDetected) onOfflineDetected();
+      window.dispatchEvent(new CustomEvent("pwa:offline"));
+    });
+  }
 
   return _handler;
 }
@@ -136,6 +137,7 @@ export function initializePWA(
  * Returns true when the app is running as an installed PWA (standalone mode).
  */
 export function isAppInstalled(): boolean {
+  if (typeof window === "undefined") return false;
   return (
     window.matchMedia("(display-mode: standalone)").matches ||
     (window.navigator as { standalone?: boolean }).standalone === true
@@ -146,12 +148,12 @@ export function isAppInstalled(): boolean {
  * Returns the current online status.
  */
 export function isOnline(): boolean {
+  if (typeof navigator === "undefined") return true;
   return navigator.onLine;
 }
 
 /**
- * Subscribe to online/offline transitions.
- * Returns an unsubscribe function.
+ * Subscribe to online/offline transitions. Returns an unsubscribe function.
  */
 export function onNetworkStatusChange(
   callback: (online: boolean) => void,

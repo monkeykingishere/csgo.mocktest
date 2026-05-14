@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import appCss from "../styles.css?url";
 import { initializePWA } from "../lib/pwa";
 import { OfflineDetector } from "../components/OfflineDetector";
+import { PWAInstallPrompt } from "../components/PWAInstallPrompt";
 
 function NotFoundComponent() {
   return (
@@ -113,6 +114,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <Outlet />
       <OfflineDetector />
+      <PWAInstallPrompt />
     </QueryClientProvider>
   );
 }
