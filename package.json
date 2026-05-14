@@ -68,8 +68,8 @@
     "vite-tsconfig-paths": "^6.0.2",
     "zod": "^3.24.2",
     "zustand": "^5.0.13",
-    "h3": "latest",
-    "rou3": "latest"
+    "h3": "^2.0.1-rc.22",
+    "rou3": "^0.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
