@@ -14,14 +14,14 @@ export function Header() {
     navigate({ to: "/" });
   };
 
-  const navLinks = current
+  const navLinks = (current
     ? [
         { to: "/dashboard", label: "Dashboard" },
         { to: "/history", label: "History" },
         { to: "/profile", label: "Profile" },
         { to: "/settings", label: "Settings" },
       ]
-    : [{ to: "/", label: "Home" }];
+    : [{ to: "/", label: "Home" }]) as const;
 
   return (
     <header className="sticky top-0 z-40 nb-border border-x-0 border-t-0 bg-[var(--brand-yellow)]">
@@ -33,7 +33,6 @@ export function Header() {
 
         <nav className="hidden md:flex items-center gap-2">
           {navLinks.map(l => (
-            // @ts-ignore
             <Link key={l.to} to={l.to} className="nb-interactive bg-white px-3 py-1.5 text-sm font-bold uppercase">
               {l.label}
             </Link>
@@ -55,7 +54,6 @@ export function Header() {
       {open && (
         <div className="md:hidden border-t-4 border-black bg-white p-4 space-y-2">
           {navLinks.map(l => (
-            // @ts-ignore
             <Link key={l.to} to={l.to} onClick={() => setOpen(false)} className="block nb-interactive bg-[var(--brand-yellow)] px-3 py-2 text-sm font-bold uppercase">
               {l.label}
             </Link>
